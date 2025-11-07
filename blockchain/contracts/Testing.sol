@@ -4,11 +4,11 @@ pragma experimental ABIEncoderV2;
 import './RawMaterial.sol';
 // import './Supplier.sol';
 // import './Transporter.sol';
-import './Medicine.sol';
+import './crop.sol';
 // import './Manufacturer.sol';
-import './MedicineW_D.sol';
+import './cropW_D.sol';
 // import './Wholesaler.sol';
-import './MedicineD_C.sol';
+import './cropD_C.sol';
 // import './Distributor.sol';
 // import './Customer.sol';
 
@@ -148,13 +148,13 @@ contract SupplyChain {
             RawMaterial(_addr).pickPackage(msg.sender);
         } else if(transportertype == 2) { 
             /// Manufacturer -> Wholesaler
-            Medicine(_addr).pickMedicine(msg.sender);
+            crop(_addr).pickcrop(msg.sender);
         } else if(transportertype == 3) {   
             // Wholesaler to Distributer
-            MedicineW_D(cid).pickWD(_addr, msg.sender);
+            cropW_D(cid).pickWD(_addr, msg.sender);
         } else if(transportertype == 4) {   
             // Distrubuter to Customer
-            MedicineD_C(cid).pickDC(_addr, msg.sender);
+            cropD_C(cid).pickDC(_addr, msg.sender);
         }
     }
     
@@ -162,7 +162,7 @@ contract SupplyChain {
     ///////////////  Manufacturer ///////////////
     
     mapping (address => address[]) public manufacturerRawMaterials;
-    mapping (address => address[]) public manufacturerMedicines;
+    mapping (address => address[]) public manufacturercrops;
     
     function requestRawMaterial(address supplierAddr, address manuAddr, address rawMaterialAddr, bytes memory signature) external {
         emit buyEvent(supplierAddr, manuAddr, rawMaterialAddr, signature, now);
@@ -182,7 +182,7 @@ contract SupplyChain {
     }
     
     
-    function manufacturerCreatesMedicine(
+    function manufacturerCreatescrop(
         address _manufacturerAddr,
         bytes32 _description,
         address[] memory _rawAddr,
@@ -192,7 +192,7 @@ contract SupplyChain {
         uint RcvrType
         ) external {
             
-        Medicine _medicine = new Medicine(
+        crop _crop = new crop(
             _manufacturerAddr,
             _description,
             _rawAddr,
@@ -202,7 +202,7 @@ contract SupplyChain {
             RcvrType
         );
         
-        manufacturerMedicines[_manufacturerAddr].push(address(_medicine));
+        manufacturercrops[_manufacturerAddr].push(address(_crop));
         
     }
     
@@ -210,7 +210,7 @@ contract SupplyChain {
     ///////////////  Wholesaler  ///////////////
 
     
-//     function wholesalerReceivedMedicine(
+//     function wholesalerReceivedcrop(
 //         address _address
 //         ) external {
 //         require(
@@ -218,22 +218,22 @@ contract SupplyChain {
 //             "Only Wholesaler and Distributor can call this function"
 //         );
         
-//         medicineRecievedAtWholesaler(
+//         cropRecievedAtWholesaler(
 //             _address
 //         );
 //     }
     
-//     function transferMedicineW_D(
+//     function transfercropW_D(
 //         address _address,
 //         address transporter,
 //         address receiver) external {
 //         require(
 //             userInfo[msg.sender].role == roles.wholesaler &&
-//             msg.sender == Medicine(_address).getWDC()[0],
+//             msg.sender == crop(_address).getWDC()[0],
 //             "Only Wholesaler or current owner of package can call this function"
 //         );
         
-//         transferMedicineWtoD(
+//         transfercropWtoD(
 //             _address,
 //             transporter,
 //             receiver
@@ -245,44 +245,44 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.wholesaler,
 //             "Only Wholesaler Can call this function."
 //         );
-//         return MedicineWtoD[msg.sender][index];
+//         return cropWtoD[msg.sender][index];
 //     }
 
 //     function getSubContractWD(address _address) external view returns (address SubContractWD) {
-//         return MedicineWtoDTxContract[_address];
+//         return cropWtoDTxContract[_address];
 //     }
 
 
 //     ///////////////  Distributor  ///////////////
 
 
-//     function distributorReceivedMedicine(
+//     function distributorReceivedcrop(
 //       address _address,
 //       address cid
 //     ) external {
 //         require(
 //             userInfo[msg.sender].role == roles.distributor &&
-//             msg.sender == Medicine(_address).getWDC()[1],
+//             msg.sender == crop(_address).getWDC()[1],
 //             "Only Distributor or current owner of package can call this function"  
 //         );
         
-//         medicineRecievedAtDistributor(
+//         cropRecievedAtDistributor(
 //             _address,
 //             cid
 //         );
 //     }
 
-//     function distributorTransferMedicinetoCustomer(
+//     function distributorTransfercroptoCustomer(
 //         address _address,
 //         address transporter,
 //         address receiver
 //     ) external {
 //         require(
 //             userInfo[msg.sender].role == roles.distributor &&
-//             msg.sender == Medicine(_address).getWDC()[1],
+//             msg.sender == crop(_address).getWDC()[1],
 //             "Only Distributor or current owner of package can call this function"
 //         );
-//         transferMedicineDtoC(_address, transporter, receiver);
+//         transfercropDtoC(_address, transporter, receiver);
 //     }
     
 //     function getBatchesCountDC() external view returns (uint count){
@@ -290,7 +290,7 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.distributor,
 //             "Only Distributor Can call this function."
 //         );
-//         return MedicineDtoC[msg.sender].length;
+//         return cropDtoC[msg.sender].length;
 //     }
 
 //     function getBatchIdByIndexDC(uint index) external view returns(address packageID) {
@@ -298,18 +298,18 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.distributor,
 //             "Only Distributor Can call this function."
 //         );
-//         return MedicineDtoC[msg.sender][index];
+//         return cropDtoC[msg.sender][index];
 //     }
 
 //     function getSubContractDC(address _address) external view returns (address SubContractDP) {
-//         return MedicineDtoCTxContract[_address];
+//         return cropDtoCTxContract[_address];
 //     }
     
     
 //     ///////////////  Customer  ///////////////
     
     
-//     function customerReceivedMedicine(
+//     function customerReceivedcrop(
 //         address _address,
 //         address cid
 //     ) external {
@@ -317,7 +317,7 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.customer,
 //             "Only Customer Can call this function."
 //         );
-//         medicineRecievedAtCustomer(_address, cid);
+//         cropRecievedAtCustomer(_address, cid);
 //     }
 
 //     function updateStatus(
@@ -326,10 +326,10 @@ contract SupplyChain {
 //     ) external {
 //         require(
 //             userInfo[msg.sender].role == roles.customer &&
-//             msg.sender == Medicine(_address).getWDC()[2],
+//             msg.sender == crop(_address).getWDC()[2],
 //             "Only Customer or current owner of package can call this function"
 //         );
-//         require(sale[_address] == salestatus(1), "Medicine Must be at Customer");
+//         require(sale[_address] == salestatus(1), "crop Must be at Customer");
         
 //         updateSaleStatus(_address, Status);
 //     }
@@ -350,7 +350,7 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.customer,
 //             "Only Wholesaler or current owner of package can call this function"
 //         );
-//         return  MedicineBatchAtCustomer[msg.sender].length;
+//         return  cropBatchAtCustomer[msg.sender].length;
 //     }
 
 //     function getBatchIdByIndexC(uint index) external view returns(address _address) {
@@ -358,7 +358,7 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.customer,
 //             "Only Wholesaler or current owner of package can call this function"
 //         );
-//         return MedicineBatchAtCustomer[msg.sender][index];
+//         return cropBatchAtCustomer[msg.sender][index];
 //     }
     
     // function verify(address p, bytes32 hash, uint8 v, bytes32 r, bytes32 s) external view returns(bool) {

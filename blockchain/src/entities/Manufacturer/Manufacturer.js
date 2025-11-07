@@ -96,11 +96,11 @@
 //               </div>
 //              </ListItemIcon>
 //         </ListItem>
-//         <ListItem button key={'Create-Medicine'}>
+//         <ListItem button key={'Create-crop'}>
 //           <ListItemIcon>
 //             <div>
 //               <CollectionsIcon />
-//               <Button href="/manufacturer/create-medicine" color="inherit">{'Create-Medicine'}</Button>
+//               <Button href="/manufacturer/create-crop" color="inherit">{'Create-crop'}</Button>
 //             </div>
 //           </ListItemIcon>
 //         </ListItem>
@@ -198,15 +198,15 @@ import AddItem from "@material-ui/icons/AddBox";
 import ViewItem from "@material-ui/icons/ViewList";
 import ViewTrans from "@material-ui/icons/Visibility";
 
-import CreateMedicine from './CreateMedicine';
+import Createcrop from './Createcrop';
 import ReceivedRawMaterial from './ReceivedRawMaterial';
 import ViewReceivedRawMat from './ViewReceivedRawMat';
 import ReceiveProduct from './ReceiveProduct';
 import ViewResponses from '../Events/ViewResponses';
 import ViewRequests from '../Events/ViewRequests';
 import RequestProductManufacturer from './RequestProduct';
-import ViewMedicines from './ViewMedicines';
-import MedicineInfo from './MedicineInfo';
+import Viewcrops from './Viewcrops';
+import cropInfo from './cropInfo';
 import ViewTransactions from '../Transactions/ViewTransactions';
 
 import ManufacturerDashboard from '../../main_dashboard/views/Dashboard/Dashboard';
@@ -226,10 +226,10 @@ const routes = [
     layout: "/manufacturer"
   },*/
   {
-    path: "/create-medicine",
+    path: "/create-crop",
     name: "Create Crop Product",
     icon: AddItem,
-    component: CreateMedicine,
+    component: Createcrop,
     layout: "/manufacturer"
   },
   {
@@ -261,10 +261,10 @@ const routes = [
     layout: "/manufacturer"
   },
   {
-    path: "/view-medicines",
+    path: "/view-crops",
     name: "View Crop Product",
     icon: ViewItem,
-    component: ViewMedicines,
+    component: Viewcrops,
     layout: "/manufacturer"
   },
   {
@@ -303,7 +303,7 @@ export default function Manufacturer({ ...rest }) {
         return null;
       })}
       <Route exact path="/manufacturer/view-raw-material/:id" component={ReceivedRawMaterial} />
-      <Route exact path="/manufacturer/view-medicine/:id" component={MedicineInfo} />
+      <Route exact path="/manufacturer/view-crop/:id" component={cropInfo} />
       <Route exact path="/manufacturer/view-transaction/:id" component={ViewTransactions} />
       <Route exact path="/manufacturer/view-request/:id" component={ViewRequests} />
       <Redirect from="/manufacturer" to="/manufacturer/dashboard" />

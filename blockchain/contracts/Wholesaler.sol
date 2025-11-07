@@ -1,39 +1,39 @@
 pragma solidity ^0.8.17;
 
-import './MedicineW_D.sol';
-import './Medicine.sol';
+import './cropW_D.sol';
+import './crop.sol';
 
 contract Wholesaler {
     
-    mapping(address => address[]) public MedicinesAtWholesaler;
-    mapping(address => address[]) public MedicineWtoD;
-    mapping(address => address) public MedicineWtoDTxContract;
+    mapping(address => address[]) public cropsAtWholesaler;
+    mapping(address => address[]) public cropWtoD;
+    mapping(address => address) public cropWtoDTxContract;
     
     constructor() public {}
     
-    function medicineRecievedAtWholesaler(
+    function cropRecievedAtWholesaler(
         address _address
     ) public {
 
-        uint rtype = Medicine(_address).receivedMedicine(msg.sender);
+        uint rtype = crop(_address).receivedcrop(msg.sender);
         if(rtype == 1){
-            MedicinesAtWholesaler[msg.sender].push(_address);
+            cropsAtWholesaler[msg.sender].push(_address);
         }
     }
     
-    function transferMedicineWtoD(
+    function transfercropWtoD(
         address _address,
         address transporter,
         address receiver
     ) public {
         
-        MedicineW_D wd = new MedicineW_D(
+        cropW_D wd = new cropW_D(
             _address,
             msg.sender,
             transporter,
             receiver
         );
-        MedicineWtoD[msg.sender].push(address(wd));
-        MedicineWtoDTxContract[_address] = address(wd);
+        cropWtoD[msg.sender].push(address(wd));
+        cropWtoDTxContract[_address] = address(wd);
     }
 }

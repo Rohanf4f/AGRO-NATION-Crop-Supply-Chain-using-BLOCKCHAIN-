@@ -1,43 +1,43 @@
 pragma solidity ^0.8.17;
 
-import './MedicineW_D.sol';
-import './Medicine.sol';
-import './MedicineD_C.sol';
+import './cropW_D.sol';
+import './crop.sol';
+import './cropD_C.sol';
 
 contract Distributor {
     
-    mapping(address => address[]) public MedicinesAtDistributor;
-    mapping(address => address[]) public MedicineDtoC;
-    mapping(address => address) public MedicineDtoCTxContract;
+    mapping(address => address[]) public cropsAtDistributor;
+    mapping(address => address[]) public cropDtoC;
+    mapping(address => address) public cropDtoCTxContract;
     
-    function medicineRecievedAtDistributor(
+    function cropRecievedAtDistributor(
         address _address, 
         address cid
         ) public {
             
-        uint rtype = Medicine(_address).receivedMedicine(msg.sender);
+        uint rtype = crop(_address).receivedcrop(msg.sender);
         if(rtype == 2){
-            MedicinesAtDistributor[msg.sender].push(_address);
-            if(Medicine(_address).getWDC()[0] != address(0)){
-                MedicineW_D(cid).receiveWD(_address, msg.sender);
+            cropsAtDistributor[msg.sender].push(_address);
+            if(crop(_address).getWDC()[0] != address(0)){
+                cropW_D(cid).receiveWD(_address, msg.sender);
             }
         }
     }
 
 
-    function transferMedicineDtoC(
+    function transfercropDtoC(
         address _address,
         address transporter,
         address receiver
     ) public {
-        MedicineD_C dp = new MedicineD_C(
+        cropD_C dp = new cropD_C(
             _address,
             msg.sender,
             transporter,
             receiver
         );
-        MedicineDtoC[msg.sender].push(address(dp));
-        MedicineDtoCTxContract[_address] = address(dp);
+        cropDtoC[msg.sender].push(address(dp));
+        cropDtoCTxContract[_address] = address(dp);
     }
 
 }

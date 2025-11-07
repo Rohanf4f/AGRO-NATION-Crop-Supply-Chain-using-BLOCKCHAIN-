@@ -2,8 +2,8 @@ import db from '../db/init';
 
 class Transaction {
 
-    constructor(medicineAddress, fromAddresses, toAddresses, hash, previousHash, geoPoints, timestamps) {
-        this.medicineAddress = medicineAddress;
+    constructor(cropAddress, fromAddresses, toAddresses, hash, previousHash, geoPoints, timestamps) {
+        this.cropAddress = cropAddress;
         this.fromAddresses = fromAddresses;
         this.toAddresses = toAddresses;
         this.hash = hash;
@@ -14,7 +14,7 @@ class Transaction {
 
     async save() {
         return db.collection('transactions').add({
-            'medicineAddress': this.medicineAddress,
+            'cropAddress': this.cropAddress,
             'fromAddresses': this.fromAddresses,
             'toAddresses': this.toAddresses,
             'hash': this.hash,

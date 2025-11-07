@@ -2,11 +2,11 @@ pragma solidity ^0.6.6;
 
 import './Transactions.sol';
 
-contract Medicine {
+contract crop {
 
     address Owner;
 
-    enum medicineStatus {
+    enum cropStatus {
         atManufacturer,
         pickedForW,
         pickedForD,
@@ -24,7 +24,7 @@ contract Medicine {
     address distributor;
     address customer;
     uint quantity;
-    medicineStatus status;
+    cropStatus status;
     address txnContractAddress;
 
     event ShippmentUpdate(
@@ -51,13 +51,13 @@ contract Medicine {
         transporters = _transporterAddr;
         wholesaler = address(0x0);
         distributor = address(0x0);
-        status = medicineStatus(0);
+        status = cropStatus(0);
         Transactions txnContract = new Transactions(_manufacturerAddr);
         txnContractAddress = address(txnContract);
     }
 
 
-    function getMedicineInfo () public view returns(
+    function getcropInfo () public view returns(
         address _manufacturerAddr,
         bytes32 _description,
         address[] memory _rawAddr,
@@ -97,7 +97,7 @@ contract Medicine {
     }
 
 
-    function pickMedicine(
+    function pickcrop(
         address _transporterAddr
     ) public {
         require(
@@ -105,15 +105,15 @@ contract Medicine {
             "Only Transporter can call this function"
         );
         require(
-            status == medicineStatus(0),
+            status == cropStatus(0),
             "Package must be at Manufacturer."
         );
 
         if(wholesaler != address(0x0)){
-            status = medicineStatus(1);
+            status = cropStatus(1);
             emit ShippmentUpdate(address(this), _transporterAddr, wholesaler, 1, 1);
         }else{
-            status = medicineStatus(2);
+            status = cropStatus(2);
             emit ShippmentUpdate(address(this), _transporterAddr, distributor, 1, 2);
         }
     }
@@ -130,7 +130,7 @@ contract Medicine {
         distributor = addr;
     }
 
-    function receivedMedicine(
+    function receivedcrop(
         address _receiverAddr
     ) public returns(uint) {
 
@@ -144,12 +144,12 @@ contract Medicine {
             "Product not picked up yet"
         );
 
-        if(_receiverAddr == wholesaler && status == medicineStatus(1)){
-            status = medicineStatus(3);
+        if(_receiverAddr == wholesaler && status == cropStatus(1)){
+            status = cropStatus(3);
             emit ShippmentUpdate(address(this), transporters[transporters.length - 1], wholesaler, 2, 3);
             return 1;
-        } else if(_receiverAddr == distributor && status == medicineStatus(2)){
-            status = medicineStatus(4);
+        } else if(_receiverAddr == distributor && status == cropStatus(2)){
+            status = cropStatus(4);
             emit ShippmentUpdate(address(this), transporters[transporters.length - 1], distributor,3, 4);
             return 2;
         }
@@ -165,7 +165,7 @@ contract Medicine {
             "this Wholesaler is not Associated."
         );
         distributor = receiver;
-        status = medicineStatus(2);
+        status = cropStatus(2);
     }
 
 
@@ -176,7 +176,7 @@ contract Medicine {
             distributor == receiver,
             "This Distributor is not Associated."
         );
-        status = medicineStatus(4);
+        status = cropStatus(4);
     }
 
 
@@ -189,7 +189,7 @@ contract Medicine {
             "This Distributor is not Associated."
         );
         customer = receiver;
-        status = medicineStatus(5);
+        status = cropStatus(5);
     }
 
 
@@ -200,6 +200,6 @@ contract Medicine {
             customer == receiver,
             "This Customer is not Associated."
         );
-        status = medicineStatus(6);
+        status = cropStatus(6);
     }
 }

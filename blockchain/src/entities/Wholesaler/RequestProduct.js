@@ -33,15 +33,15 @@ export default function RequestProductWholesaler(props) {
   const [ web3, setWeb3 ] = useState(props.web3);
   const [ supplyChain ] = useState(props.supplyChain);
   const [ loading, isLoading ] = useState(false);
-  const [ medicineAddress, setmedicineAddress ] = useState("");
+  const [ cropAddress, setcropAddress ] = useState("");
   const [ manufacturerAddress, setmanufacturerAddress ] = useState("");
   const [ signature, setSignature ] = useState("");
 
   const classes = useStyles();
 
   const handleInputChange = (e) => {
-    if (e.target.id === 'medicineAddress') {
-      setmedicineAddress(e.target.value);
+    if (e.target.id === 'cropAddress') {
+      setcropAddress(e.target.value);
     } else if (e.target.id === 'manufacturerAddress') {
       setmanufacturerAddress(e.target.value);
     } else if (e.target.id === 'signature') {
@@ -52,7 +52,7 @@ export default function RequestProductWholesaler(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
     isLoading(true);
-    supplyChain.methods.requestProduct(account, manufacturerAddress, medicineAddress, signature).send({ from: account })
+    supplyChain.methods.requestProduct(account, manufacturerAddress, cropAddress, signature).send({ from: account })
       .once('receipt', async (receipt) => {
         alert('Request Made to Manufacturer!');
         console.log(receipt);
@@ -71,7 +71,7 @@ export default function RequestProductWholesaler(props) {
             <Grid container spacing={2}>
 
               <Grid item xs={12}>
-                <TextField variant="outlined" onChange={handleInputChange} required fullWidth id="medicineAddress" label="Crop Package Address" name="medicineAddress" />
+                <TextField variant="outlined" onChange={handleInputChange} required fullWidth id="cropAddress" label="Crop Package Address" name="cropAddress" />
               </Grid>
               <Grid item xs={12}>
                 <TextField variant="outlined" onChange={handleInputChange} required fullWidth id="manufacturerAddress" label="Crop Manufacturer Address" name="manufacturerAddress" />

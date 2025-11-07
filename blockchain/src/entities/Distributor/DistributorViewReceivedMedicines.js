@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme)=>({
     })
 );
 
-export default function DistributorViewReceivedMedicine(props) {
+export default function DistributorViewReceivedcrop(props) {
     const classes = useStyles();
     const [account] = useState(props.account);
     const [web3, setWeb3] = useState(props.web3);
@@ -21,11 +21,11 @@ export default function DistributorViewReceivedMedicine(props) {
     const [addresses, setAddresses] = useState([]);
 
     async function handleSubmit() {
-        var medicineAddresses = await supplyChain.methods.getAllMedicinesAtDistributor().call({from: account});
+        var cropAddresses = await supplyChain.methods.getAllcropsAtDistributor().call({from: account});
 
-        var components = medicineAddresses.map((addr) => {
+        var components = cropAddresses.map((addr) => {
           return <div><ul><li>
-              <Link to={{ pathname: `/distributor/view-medicine/${addr}`, query: {address: addr, account: account, web3: web3, supplyChain: supplyChain}}}>{addr}</Link>
+              <Link to={{ pathname: `/distributor/view-crop/${addr}`, query: {address: addr, account: account, web3: web3, supplyChain: supplyChain}}}>{addr}</Link>
           </li></ul></div>;
         });
         setAddresses(components);

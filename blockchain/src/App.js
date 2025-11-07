@@ -25,24 +25,24 @@ import HandlePackage from './entities/Transporter/HandlePackage';
 import Manufacturer from './entities/Manufacturer/Manufacturer';
 import RequestProductManufacturer from './entities/Manufacturer/RequestProduct';
 import ReceiveProduct from './entities/Manufacturer/ReceiveProduct';
-import CreateMedicine from './entities/Manufacturer/CreateMedicine';
-import ViewMedicines from './entities/Manufacturer/ViewMedicines';
-import MedicineInfo from './entities/Manufacturer/MedicineInfo';
+import Createcrop from './entities/Manufacturer/Createcrop';
+import Viewcrops from './entities/Manufacturer/Viewcrops';
+import cropInfo from './entities/Manufacturer/cropInfo';
 
 // Wholesaler imports
 import Wholesaler from './entities/Wholesaler/Wholesaler';
-import ViewReceivedMedicines from './entities/Wholesaler/ViewReceivedMedicine';
+import ViewReceivedcrops from './entities/Wholesaler/ViewReceivedcrop';
 import RequestProductWholesaler from './entities/Wholesaler/RequestProduct';
-import TransferMedicine from './entities/Wholesaler/TransferMedicine';
+import Transfercrop from './entities/Wholesaler/Transfercrop';
 import WholesalerReceiveProduct from './entities/Wholesaler/ReceiveProduct';
-import WholesalerMedicineInfo from './entities/Wholesaler/WholesalerMedicineInfo';
+import WholesalercropInfo from './entities/Wholesaler/WholesalercropInfo';
 
 // Distributor imports
 import Distributor from './entities/Distributor/Distributor';
 import RequestProductDistributor from './entities/Distributor/RequestProduct';
 import DistributorReceiveProduct from './entities/Distributor/DistributorReceiveProduct';
-import DistributorViewReceivedMedicines from './entities/Distributor/DistributorViewReceivedMedicines';
-import DistributorMedicineInfo from './entities/Distributor/DistributorMedicineInfo';
+import DistributorViewReceivedcrops from './entities/Distributor/DistributorViewReceivedcrops';
+import DistributorcropInfo from './entities/Distributor/DistributorcropInfo';
 
 // Transaction imports
 import ViewTransations from './entities/Transactions/ViewTransactions';
@@ -156,35 +156,35 @@ class App extends Component {
             {/* <Route exact path="/manufacturer/request-product" component={(() => <RequestProductManufacturer account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
             <Route exact path="/manufacturer/view-responses" component={(() => <ViewResponses account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
             <Route exact path="/manufacturer/receive-product" component={(() => <ReceiveProduct account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/manufacturer/create-medicine" component={(() => <CreateMedicine account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/manufacturer/view-medicines" component={(() => <ViewMedicines account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} /> */}
-            {/* <Route exact path="/manufacturer/view-medicine/:id" component={MedicineInfo} />
+            <Route exact path="/manufacturer/create-crop" component={(() => <Createcrop account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
+            <Route exact path="/manufacturer/view-crops" component={(() => <Viewcrops account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} /> */}
+            {/* <Route exact path="/manufacturer/view-crop/:id" component={cropInfo} />
             <Route exact path="/manufacturer/view-transactions/:id" component={ViewTransations} />
             <Route exact path="/manufacturer/view-requests/:id" component={ViewRequests} /> */}
 
             <Route path="/wholesaler" render={(props) => (<Wholesaler account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            {/* <Route exact path="/wholesaler/view-medicines" component={(() => <ViewReceivedMedicines account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/wholesaler/view-medicines/:id" component={WholesalerMedicineInfo} />
+            {/* <Route exact path="/wholesaler/view-crops" component={(() => <ViewReceivedcrops account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
+            <Route exact path="/wholesaler/view-crops/:id" component={WholesalercropInfo} />
             <Route exact path="/wholesaler/request-product" component={(() => <RequestProductWholesaler account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
             <Route exact path="/wholesaler/view-responses" component={(() => <ViewResponses account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/wholesaler/transfer-medicine" component={(() => <TransferMedicine account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/wholesaler/receive-medicine" component={(() => <WholesalerReceiveProduct account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
+            <Route exact path="/wholesaler/transfer-crop" component={(() => <Transfercrop account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
+            <Route exact path="/wholesaler/receive-crop" component={(() => <WholesalerReceiveProduct account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
             <Route exact path="/wholesaler/view-requests/:id" component={ViewRequests} />
             <Route exact path="/wholesaler/view-transactions/:id" component={ViewTransations} /> */}
 
             <Route path="/distributor" render={(props) => (<Distributor account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
             {/* <Route exact path="/distributor/request-product" component={(() => <RequestProductDistributor account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
             <Route exact path="/distributor/view-responses" component={(() => <ViewResponses account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/distributor/receive-medicine" component={(() => <DistributorReceiveProduct account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />            <Route exact path="/distributor/view-medicines" component={(() => <DistributorViewReceivedMedicines account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} /> */}
+            <Route exact path="/distributor/receive-crop" component={(() => <DistributorReceiveProduct account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />            <Route exact path="/distributor/view-crops" component={(() => <DistributorViewReceivedcrops account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} /> */}
 
             {/*
             // THESE ARE OLD DISTRIBUTOR ROUTES
             <Route path="/wholesaler" render={(props) => (<Wholesaler account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/wholesaler/view-medicines" component={(() => <ViewReceivedMedicines account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
+            <Route exact path="/wholesaler/view-crops" component={(() => <ViewReceivedcrops account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
             <Route exact path="/wholesaler/request-product" component={(() => <RequestProductWholesaler account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
             <Route exact path="/wholesaler/view-responses" component={(() => <ViewResponses account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/wholesaler/transfer-medicine" component={(() => <TransferMedicine account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
-            <Route exact path="/wholesaler/receive-medicine" component={(() => <WholesalerReceiveProduct account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} /> */}
+            <Route exact path="/wholesaler/transfer-crop" component={(() => <Transfercrop account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} />
+            <Route exact path="/wholesaler/receive-crop" component={(() => <WholesalerReceiveProduct account={this.state.account} supplyChain={this.state.supplyChain} web3={this.state.web3} />)} /> */}
 
 
             <Route path="" component={NotFound} />

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Sample from '../../components/images/supplierbg.jpg';
-import AddMedicine from './AddMedicine'
+import Addcrop from './Addcrop'
 import Header from '../../components/header/Header';
 import {NavLink, withRouter, BrowserRouter as Router, Route} from 'react-router-dom'; 
 import history from '../../components/views/history';
@@ -11,14 +11,14 @@ class Manufacturer extends Component{
     constructor(props){
         super(props);
         this.state = {
-            addMedicineClick: false
+            addcropClick: false
         }
     }
-    handleAddMedicineClick(){
+    handleAddcropClick(){
         this.setState({
-            addMedicineClick: true
+            addcropClick: true
         })
-        console.log("Add Medicine");
+        console.log("Add crop");
     }
     render(){
         return (
@@ -31,12 +31,12 @@ class Manufacturer extends Component{
                   <h3 style={{ textAlign: "center", color: "white" }}>Welcome Manufacturer!</h3>
                   <Grid container>
                       <Grid item md={4}>
-                        <Button variant="contained" color="primary" onClick = {()=> this.handleAddMedicineClick()}>Add New Crop Information</Button>
-                        <div className= "button-clicked">{(this.state.addMedicineClick)? <AddMedicine/> : ''}</div>
+                        <Button variant="contained" color="primary" onClick = {()=> this.handleAddcropClick()}>Add New Crop Information</Button>
+                        <div className= "button-clicked">{(this.state.addcropClick)? <Addcrop/> : ''}</div>
                       </Grid>
                       <Grid item md={4}>
                         <Button variant="contained" color="primary" >View Raw Material</Button>
-                        {/* <div className= "button-clicked">{(this.state.addMedicineClick)? <AddMedicine/> : ''}</div> */}
+                        {/* <div className= "button-clicked">{(this.state.addcropClick)? <Addcrop/> : ''}</div> */}
                       </Grid>
                    
                   </Grid>

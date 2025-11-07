@@ -1,14 +1,14 @@
 pragma solidity ^0.6.6;
 
-import './Medicine.sol';
+import './crop.sol';
 
-contract MedicineD_C {
+contract cropW_D {
 
     address Owner;
 
     enum packageStatus { atcreator, picked, delivered }
 
-    address medAddr;
+    address medId;
     address sender;
     address transporter;
     address receiver;
@@ -21,31 +21,31 @@ contract MedicineD_C {
         address Receiver
     ) public {
         Owner = Sender;
-        medAddr = _address;
+        medId = _address;
         sender = Sender;
         transporter = Transporter;
         receiver = Receiver;
         status = packageStatus(0);
     }
 
-    function pickDC(
+
+    function pickWD(
         address _address,
-        address transporterAddr
+        address _transporter
     ) public {
         require(
-            transporter == transporterAddr,
-            "Only Associated transporter can call this function."
+            transporter == _transporter,
+            "Only Associated shipper can call this function."
         );
         status = packageStatus(1);
 
-        Medicine(_address).sendDtoC(
+        crop(_address).sendWtoD(
             receiver,
             sender
         );
     }
 
-
-    function receiveDC(
+    function receiveWD(
         address _address,
         address Receiver
     ) public {
@@ -54,12 +54,13 @@ contract MedicineD_C {
             "Only Associated receiver can call this function."
         );
         status = packageStatus(2);
-        Medicine(_address).receivedDtoC(
+
+        crop(_address).receivedWtoD(
             Receiver
         );
     }
 
-    function get_addressStatus() public view returns(
+    function getBatchIDStatus() public view returns(
         uint
     ) {
         return uint(status);

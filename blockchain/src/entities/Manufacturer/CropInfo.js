@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Loader from '../../components/Loader';
-import Medicine from '../../build/Medicine.json';
+import crop from '../../build/crop.json';
 import Transactions from '../../build/Transactions.json';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import CustomStepper from '../../main_dashboard/components/Stepper/Stepper';
@@ -17,19 +17,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MedicineInfo(props) {
+export default function cropInfo(props) {
   const classes = useStyles();
   const [ account ] = useState(props.location.query.account);
-  const [ medicineAddress ] = useState(props.location.query.address);
+  const [ cropAddress ] = useState(props.location.query.address);
   const [ web3 ] = useState(props.location.query.web3);
   const [ supplyChain ] = useState(props.location.query.supplyChain);
   const [ wholesaler, setWholesaler ] = useState("");
   const [ details, setDetails ] = useState({});
   const [ loading, isLoading ] = useState(true);
 
-  async function getMedicineData() {
-    let medicine = new web3.eth.Contract(Medicine.abi, medicineAddress);
-    let data = await medicine.methods.getMedicineInfo().call({ from: account });
+  async function getcropData() {
+    let crop = new web3.eth.Contract(crop.abi, cropAddress);
+    let data = await crop.methods.getcropInfo().call({ from: account });
     let status = Number(data[ 6 ]);
     let activeStep = status;
 
@@ -43,7 +43,7 @@ export default function MedicineInfo(props) {
     setWholesaler(data[ 8 ]);
 
     let display = <div>
-      <p>Product Address: {medicineAddress}</p>
+      <p>Product Address: {cropAddress}</p>
       <p>Product Manufacturer: {data[ 0 ]}</p>
       <p>Description: {data[ 1 ]}</p>
       <p>Product Raw Materials: {data[ 2 ]}</p>
@@ -88,11 +88,11 @@ export default function MedicineInfo(props) {
   }
 
   function sendPackage() {
-    let medicine = new web3.eth.Contract(Medicine.abi, medicineAddress);
+    let crop = new web3.eth.Contract(crop.abi, cropAddress);
     let signature = prompt('Enter signature');
-    supplyChain.methods.sendPackageToEntity(wholesaler, account, medicineAddress, signature).send({ from: account })
+    supplyChain.methods.sendPackageToEntity(wholesaler, account, cropAddress, signature).send({ from: account })
       .once('receipt', async (receipt) => {
-        let data = await medicine.methods.getMedicineInfo().call({ from: account });
+        let data = await crop.methods.getcropInfo().call({ from: account });
         let txnContractAddress = data[ 7 ];
         let transporterAddress = data[ 4 ][ data[ 4 ].length - 1 ];
         let txnHash = receipt.transactionHash;
@@ -104,7 +104,7 @@ export default function MedicineInfo(props) {
   }
 
   useEffect(() => {
-    getMedicineData();
+    getcropData();
   }, []);
 
   if (loading) {
@@ -116,7 +116,7 @@ export default function MedicineInfo(props) {
       <div>
         <h1>Product Details</h1>
         <p>{details}</p>
-        <Button variant="contained" color="primary" ><Link to={{ pathname: `/manufacturer/view-request/${medicineAddress}`, query: { address: medicineAddress, account: account, web3: web3, supplyChain: supplyChain } }}>View Requests</Link></Button>&nbsp;&nbsp;&nbsp;
+        <Button variant="contained" color="primary" ><Link to={{ pathname: `/manufacturer/view-request/${cropAddress}`, query: { address: cropAddress, account: account, web3: web3, supplyChain: supplyChain } }}>View Requests</Link></Button>&nbsp;&nbsp;&nbsp;
         <Button variant="contained" color="primary" onClick={sendPackage}>Send Package</Button>
       </div>
     );

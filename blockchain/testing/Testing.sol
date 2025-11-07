@@ -4,11 +4,11 @@ pragma experimental ABIEncoderV2;
 import './RawMaterial.sol';
 // import './Supplier.sol';
 // import './Transporter.sol';
-import './Medicine.sol';
+import './crop.sol';
 // import './Manufacturer.sol';
-import './MedicineW_D.sol';
+import './cropW_D.sol';
 // import './Wholesaler.sol';
-import './MedicineD_C.sol';
+import './cropD_C.sol';
 // import './Distributor.sol';
 // import './Customer.sol';
 
@@ -162,13 +162,13 @@ contract SupplyChain {
             RawMaterial(_addr).pickPackage(msg.sender);
         } else if(transportertype == 2) { 
             /// Manufacturer -> Wholesaler
-            Medicine(_addr).pickMedicine(msg.sender);
+            crop(_addr).pickcrop(msg.sender);
         } else if(transportertype == 3) {   
             // Wholesaler to Distributor
-            MedicineW_D(cid).pickWD(_addr, msg.sender);
+            cropW_D(cid).pickWD(_addr, msg.sender);
         } else if(transportertype == 4) {   
             // Distrubutor to Customer
-            MedicineD_C(cid).pickDC(_addr, msg.sender);
+            cropD_C(cid).pickDC(_addr, msg.sender);
         }
     }
     
@@ -176,7 +176,7 @@ contract SupplyChain {
     ///////////////  Manufacturer ///////////////
     
     mapping (address => address[]) public manufacturerRawMaterials;
-    mapping (address => address[]) public manufacturerMedicines;
+    mapping (address => address[]) public manufacturercrops;
     
     
     function manufacturerReceivedPackage(
@@ -200,7 +200,7 @@ contract SupplyChain {
         return ret;
     }
 
-    function manufacturerCreatesMedicine(
+    function manufacturerCreatescrop(
         address _manufacturerAddr,
         bytes32 _description,
         address[] memory _rawAddr,
@@ -208,7 +208,7 @@ contract SupplyChain {
         address[] memory _transporterAddr
         ) public {
             
-        Medicine _medicine = new Medicine(
+        crop _crop = new crop(
             _manufacturerAddr,
             _description,
             _rawAddr,
@@ -216,15 +216,15 @@ contract SupplyChain {
             _transporterAddr
         );
         
-        manufacturerMedicines[_manufacturerAddr].push(address(_medicine));
+        manufacturercrops[_manufacturerAddr].push(address(_crop));
         
     }
     
-    function getAllCreatedMedicines() public view returns(address[] memory) {
-        uint len = manufacturerMedicines[msg.sender].length;
+    function getAllCreatedcrops() public view returns(address[] memory) {
+        uint len = manufacturercrops[msg.sender].length;
         address[] memory ret = new address[](len);
         for (uint i = 0; i < len; i++) {
-            ret[i] = manufacturerMedicines[msg.sender][i];
+            ret[i] = manufacturercrops[msg.sender][i];
         }
         return ret;
     }
@@ -232,11 +232,11 @@ contract SupplyChain {
 
     ///////////////  Wholesaler  ///////////////
 
-    mapping(address => address[]) public MedicinesAtWholesaler;
-    mapping(address => address[]) public MedicineWtoD;
-    mapping(address => address) public MedicineWtoDTxContract;
+    mapping(address => address[]) public cropsAtWholesaler;
+    mapping(address => address[]) public cropWtoD;
+    mapping(address => address) public cropWtoDTxContract;
     
-    function wholesalerReceivedMedicine(
+    function wholesalerReceivedcrop(
         address _address,
         address _sellerAddr,
         bytes memory signature
@@ -246,25 +246,25 @@ contract SupplyChain {
             "Only Wholesaler can call this function"
         );
         
-        uint rtype = Medicine(_address).receivedMedicine(msg.sender);
-        MedicinesAtWholesaler[msg.sender].push(_address);
+        uint rtype = crop(_address).receivedcrop(msg.sender);
+        cropsAtWholesaler[msg.sender].push(_address);
         emit receivedEvent(msg.sender, _sellerAddr, _address, signature, now);
     }
     
-    function transferMedicineWtoD(
+    function transfercropWtoD(
             address _address,
             address transporter,
             address receiver
         ) public {
             
-        MedicineW_D wd = new MedicineW_D(
+        cropW_D wd = new cropW_D(
             _address,
             msg.sender,
             transporter,
             receiver
         );
-        MedicineWtoD[msg.sender].push(address(wd));
-        MedicineWtoDTxContract[_address] = address(wd);
+        cropWtoD[msg.sender].push(address(wd));
+        cropWtoDTxContract[_address] = address(wd);
     }
 
     
@@ -273,18 +273,18 @@ contract SupplyChain {
             userInfo[msg.sender].role == roles.wholesaler,
             "Only Wholesaler Can call this function."
         );
-        return MedicineWtoD[msg.sender][index];
+        return cropWtoD[msg.sender][index];
     }
 
     function getSubContractWD(address _address) public view returns (address SubContractWD) {
-        return MedicineWtoDTxContract[_address];
+        return cropWtoDTxContract[_address];
     }
     
-    function getAllMedicinesAtWholesaler() public view returns(address[] memory) {
-        uint len = MedicinesAtWholesaler[msg.sender].length;
+    function getAllcropsAtWholesaler() public view returns(address[] memory) {
+        uint len = cropsAtWholesaler[msg.sender].length;
         address[] memory ret = new address[](len);
         for (uint i = 0; i < len; i++) {
-            ret[i] = MedicinesAtWholesaler[msg.sender][i];
+            ret[i] = cropsAtWholesaler[msg.sender][i];
         }
         return ret;
     }
@@ -292,12 +292,12 @@ contract SupplyChain {
 
 //     ///////////////  Distributor  ///////////////
 
-    mapping(address => address[]) public MedicinesAtDistributor;
-    mapping(address => address[]) public MedicineDtoC;
-    mapping(address => address) public MedicineDtoCTxContract;
+    mapping(address => address[]) public cropsAtDistributor;
+    mapping(address => address[]) public cropDtoC;
+    mapping(address => address) public cropDtoCTxContract;
 
 
-    function distributorReceivedMedicine(
+    function distributorReceivedcrop(
       address _address,
       address cid,
       address _sellerAddr,
@@ -305,38 +305,38 @@ contract SupplyChain {
     ) public {
         require(
             userInfo[msg.sender].role == roles.distributor &&
-            msg.sender == Medicine(_address).getWDC()[1],
+            msg.sender == crop(_address).getWDC()[1],
             "Only Distributor or current owner of package can call this function"  
         );
         
-        uint rtype = Medicine(_address).receivedMedicine(msg.sender);
+        uint rtype = crop(_address).receivedcrop(msg.sender);
         if(rtype == 2){
-            MedicinesAtDistributor[msg.sender].push(_address);
-            if(Medicine(_address).getWDC()[0] != address(0)){
-                MedicineW_D(cid).receiveWD(_address, msg.sender);
+            cropsAtDistributor[msg.sender].push(_address);
+            if(crop(_address).getWDC()[0] != address(0)){
+                cropW_D(cid).receiveWD(_address, msg.sender);
             }
         }
         emit receivedEvent(msg.sender, _sellerAddr, _address, signature, now);
     }
 
-    function distributorTransferMedicinetoCustomer(
+    function distributorTransfercroptoCustomer(
         address _address,
         address transporter,
         address receiver
     ) public {
         require(
             userInfo[msg.sender].role == roles.distributor &&
-            msg.sender == Medicine(_address).getWDC()[1],
+            msg.sender == crop(_address).getWDC()[1],
             "Only Distributor or current owner of package can call this function"
         );
-        MedicineD_C dp = new MedicineD_C(
+        cropD_C dp = new cropD_C(
             _address,
             msg.sender,
             transporter,
             receiver
         );
-        MedicineDtoC[msg.sender].push(address(dp));
-        MedicineDtoCTxContract[_address] = address(dp);
+        cropDtoC[msg.sender].push(address(dp));
+        cropDtoCTxContract[_address] = address(dp);
     }
     
     function getBatchesCountDC() public view returns (uint count){
@@ -344,7 +344,7 @@ contract SupplyChain {
             userInfo[msg.sender].role == roles.distributor,
             "Only Distributor Can call this function."
         );
-        return MedicineDtoC[msg.sender].length;
+        return cropDtoC[msg.sender].length;
     }
 
     function getBatchIdByIndexDC(uint index) public view returns(address packageID) {
@@ -352,18 +352,18 @@ contract SupplyChain {
             userInfo[msg.sender].role == roles.distributor,
             "Only Distributor Can call this function."
         );
-        return MedicineDtoC[msg.sender][index];
+        return cropDtoC[msg.sender][index];
     }
 
     function getSubContractDC(address _address) public view returns (address SubContractDP) {
-        return MedicineDtoCTxContract[_address];
+        return cropDtoCTxContract[_address];
     }
     
-    function getAllMedicinesAtDistributor() public view returns(address[] memory) {
-        uint len = MedicinesAtDistributor[msg.sender].length;
+    function getAllcropsAtDistributor() public view returns(address[] memory) {
+        uint len = cropsAtDistributor[msg.sender].length;
         address[] memory ret = new address[](len);
         for (uint i = 0; i < len; i++) {
-            ret[i] = MedicinesAtDistributor[msg.sender][i];
+            ret[i] = cropsAtDistributor[msg.sender][i];
         }
         return ret;
     }
@@ -372,7 +372,7 @@ contract SupplyChain {
 //     ///////////////  Customer  ///////////////
     
     
-//     function customerReceivedMedicine(
+//     function customerReceivedcrop(
 //         address _address,
 //         address cid
 //     ) public {
@@ -380,7 +380,7 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.customer,
 //             "Only Customer Can call this function."
 //         );
-//         medicineRecievedAtCustomer(_address, cid);
+//         cropRecievedAtCustomer(_address, cid);
 //     }
 
 //     function updateStatus(
@@ -389,10 +389,10 @@ contract SupplyChain {
 //     ) public {
 //         require(
 //             userInfo[msg.sender].role == roles.customer &&
-//             msg.sender == Medicine(_address).getWDC()[2],
+//             msg.sender == crop(_address).getWDC()[2],
 //             "Only Customer or current owner of package can call this function"
 //         );
-//         require(sale[_address] == salestatus(1), "Medicine Must be at Customer");
+//         require(sale[_address] == salestatus(1), "crop Must be at Customer");
         
 //         updateSaleStatus(_address, Status);
 //     }
@@ -413,7 +413,7 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.customer,
 //             "Only Wholesaler or current owner of package can call this function"
 //         );
-//         return  MedicineBatchAtCustomer[msg.sender].length;
+//         return  cropBatchAtCustomer[msg.sender].length;
 //     }
 
 //     function getBatchIdByIndexC(uint index) public view returns(address _address) {
@@ -421,7 +421,7 @@ contract SupplyChain {
 //             userInfo[msg.sender].role == roles.customer,
 //             "Only Wholesaler or current owner of package can call this function"
 //         );
-//         return MedicineBatchAtCustomer[msg.sender][index];
+//         return cropBatchAtCustomer[msg.sender][index];
 //     }
     
     function verify(address p, bytes32 hash, uint8 v, bytes32 r, bytes32 s) public pure returns(bool) {

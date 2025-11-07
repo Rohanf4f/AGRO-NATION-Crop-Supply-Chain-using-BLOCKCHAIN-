@@ -1,8 +1,8 @@
-pragma solidity ^0.8.17;
+pragma solidity ^0.6.6;
 
-import './Medicine.sol';
+import './crop.sol';
 
-contract MedicineD_C {
+contract cropD_C {
 
     address Owner;
 
@@ -38,7 +38,7 @@ contract MedicineD_C {
         );
         status = packageStatus(1);
 
-        Medicine(_address).sendDtoC(
+        crop(_address).sendDtoC(
             receiver,
             sender
         );
@@ -54,7 +54,7 @@ contract MedicineD_C {
             "Only Associated receiver can call this function."
         );
         status = packageStatus(2);
-        Medicine(_address).receivedDtoC(
+        crop(_address).receivedDtoC(
             Receiver
         );
     }

@@ -28,7 +28,7 @@
 //                     <Header />
 //                     <div className="body-container">
 //                         <h3 style={{ textAlign: "center", color: "black" }}>Welcome Distributor!</h3>
-//                         <Button variant="contained" color="primary" onClick={() => this.handleClick()}>View Received Medicine</Button>
+//                         <Button variant="contained" color="primary" onClick={() => this.handleClick()}>View Received crop</Button>
 //                         {/* <Button variant="contained" color="primary" onClick={()=>{this.props.history.push('/transporter/handle-package')}}>Handle Package</Button>   */}
 //                     </div>
 //                 </div>
@@ -59,14 +59,14 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import ViewItem from "@material-ui/icons/ViewList";
 import ViewTrans from "@material-ui/icons/Visibility";
 
-// import CreateMedicine from './CreateMedicine';
+// import Createcrop from './Createcrop';
 // import RequestProduct from './RequestProduct';
 import DistributorReceiveProduct from './DistributorReceiveProduct';
 import ViewResponses from '../Events/ViewResponses';
 // import ViewRequests from '../Events/ViewRequests';
 import RequestProductDistributor from './RequestProduct';
-import DistributorViewReceivedMedicines from './DistributorViewReceivedMedicines';
-import DistributorMedicineInfo from './DistributorMedicineInfo';
+import DistributorViewReceivedcrops from './DistributorViewReceivedcrops';
+import DistributorcropInfo from './DistributorcropInfo';
 // import ViewTransactions from '../Transactions/ViewTransactions';
 import ViewRequests from '../Events/ViewRequests';
 import ViewTransactions from '../Transactions/ViewTransactions';
@@ -102,17 +102,17 @@ const routes = [
         layout: "/distributor"
     },
     {
-        path: "/receive-medicine",
-        name: "Receive Medicine",
+        path: "/receive-crop",
+        name: "Receive crop",
         icon: ViewTrans,
         component: DistributorReceiveProduct,
         layout: "/distributor"
     },
     {
-        path: "/view-medicines",
-        name: "View Medicines",
+        path: "/view-crops",
+        name: "View crops",
         icon: ViewItem,
-        component: DistributorViewReceivedMedicines,
+        component: DistributorViewReceivedcrops,
         layout: "/distributor"
     },
     {
@@ -151,7 +151,7 @@ export default function Distributor({ ...rest }) {
                 return null;
             })}
 
-            <Route exact path="/distributor/view-medicine/:id" component={DistributorMedicineInfo} />
+            <Route exact path="/distributor/view-crop/:id" component={DistributorcropInfo} />
             <Route exact path="/distributor/view-request/:id" component={ViewRequests} />
             <Route exact path="/distributor/view-transaction/:id" component={ViewTransactions} />
             <Redirect from="/distributor" to="/distributor/dashboard" />

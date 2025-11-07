@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Loader from '../../components/Loader';
 import RawMaterial from '../../build/RawMaterial.json';
-import Medicine from '../../build/Medicine.json';
+import crop from '../../build/crop.json';
 import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import styles from "../../main_dashboard/assets/jss/material-dashboard-react/components/tableStyle.js";
 import CardBody from '../../main_dashboard/components/Card/CardBody';
@@ -39,12 +39,12 @@ export default function ViewRequests(props) {
         rawMaterial.methods.updateManufacturerAddress(buyerAddress).send({ from: account });
         alert('Response sent to manufacturer');
       } else if (role === "3") {
-        const medicine = new web3.eth.Contract(Medicine.abi, address);
-        medicine.methods.updateWholesalerAddress(buyerAddress).send({ from: account });
+        const crop = new web3.eth.Contract(crop.abi, address);
+        crop.methods.updateWholesalerAddress(buyerAddress).send({ from: account });
         alert('Response sent to wholesaler');
       } else if (role === "4") {
-        const medicine = new web3.eth.Contract(Medicine.abi, address);
-        medicine.methods.updateDistributorAddress(buyerAddress).send({ from: account });
+        const crop = new web3.eth.Contract(crop.abi, address);
+        crop.methods.updateDistributorAddress(buyerAddress).send({ from: account });
         alert('Response sent to distributor');
       } else {
         console.log('error');

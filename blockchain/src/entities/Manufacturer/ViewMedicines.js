@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Loader from '../../components/Loader';
 import RawMaterial from '../../build/RawMaterial.json';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import MedicineInfo from './MedicineInfo';
+import cropInfo from './cropInfo';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ViewMedicines(props) {
+export default function Viewcrops(props) {
     const classes = useStyles();
     const [ account ] = useState(props.account);
     const [ web3, setWeb3 ] = useState(props.web3);
@@ -25,10 +25,10 @@ export default function ViewMedicines(props) {
     const [ addresses, setAddresses ] = useState([]);
 
     async function handleSubmit() {
-        var rawMaterialAddresses = await supplyChain.methods.getAllCreatedMedicines().call({ from: account });
+        var rawMaterialAddresses = await supplyChain.methods.getAllCreatedcrops().call({ from: account });
         var components = rawMaterialAddresses.map((addr) => {
             return <div><ul><li>
-                <Link to={{ pathname: `/manufacturer/view-medicine/${addr}`, query: { address: addr, account: account, web3: web3, supplyChain: supplyChain } }}>{addr}</Link>
+                <Link to={{ pathname: `/manufacturer/view-crop/${addr}`, query: { address: addr, account: account, web3: web3, supplyChain: supplyChain } }}>{addr}</Link>
             </li></ul></div>;
         });
         setAddresses(components);

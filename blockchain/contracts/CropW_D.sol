@@ -1,8 +1,8 @@
 pragma solidity ^0.8.17;
 
-import './Medicine.sol';
+import './crop.sol';
 
-contract MedicineW_D {
+contract cropW_D {
 
     address Owner;
 
@@ -39,7 +39,7 @@ contract MedicineW_D {
         );
         status = packageStatus(1);
 
-        Medicine(_address).sendWtoD(
+        crop(_address).sendWtoD(
             receiver,
             sender
         );
@@ -55,7 +55,7 @@ contract MedicineW_D {
         );
         status = packageStatus(2);
 
-        Medicine(_address).receivedWtoD(
+        crop(_address).receivedWtoD(
             Receiver
         );
     }

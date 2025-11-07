@@ -1,10 +1,10 @@
 pragma solidity ^0.8.17;
 
-import './MedicineD_C.sol';
+import './cropD_C.sol';
 
 contract Customer {
     
-    mapping(address => address[]) public MedicineBatchAtCustomer;
+    mapping(address => address[]) public cropBatchAtCustomer;
     mapping(address => salestatus) public sale;
 
     enum salestatus {
@@ -15,18 +15,18 @@ contract Customer {
         damaged
     }
 
-    event MedicineStatus(
+    event cropStatus(
         address _address,
         address indexed Customer,
         uint status
     );
 
-    function medicineRecievedAtCustomer(
+    function cropRecievedAtCustomer(
         address _address,
         address cid
     ) public {
-        MedicineD_C(cid).receiveDC(_address, msg.sender);
-        MedicineBatchAtCustomer[msg.sender].push(_address);
+        cropD_C(cid).receiveDC(_address, msg.sender);
+        cropBatchAtCustomer[msg.sender].push(_address);
         sale[_address] = salestatus(1);
     }
 
@@ -35,7 +35,7 @@ contract Customer {
         uint Status
     ) public {
         sale[_address] = salestatus(Status);
-        emit MedicineStatus(_address, msg.sender, Status);
+        emit cropStatus(_address, msg.sender, Status);
     }
 
     function salesInfo(

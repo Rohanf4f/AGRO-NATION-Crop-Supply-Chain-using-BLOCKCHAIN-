@@ -1,12 +1,12 @@
 pragma solidity ^0.8.17;
 
 import './RawMaterial.sol';
-import './Medicine.sol';
+import './crop.sol';
 
 contract Manufacturer {
     
     mapping (address => address[]) public manufacturerRawMaterials;
-    mapping (address => address[]) public manufacturerMedicines;
+    mapping (address => address[]) public manufacturercrops;
 
     constructor() public {}
     
@@ -20,7 +20,7 @@ contract Manufacturer {
     }
     
     
-    function manufacturerCreatesMedicine(
+    function manufacturerCreatescrop(
         address _manufacturerAddr,
         bytes32 _description,
         address[] memory _rawAddr,
@@ -30,7 +30,7 @@ contract Manufacturer {
         uint RcvrType
         ) public {
             
-        Medicine _medicine = new Medicine(
+        crop _crop = new crop(
             _manufacturerAddr,
             _description,
             _rawAddr,
@@ -40,7 +40,7 @@ contract Manufacturer {
             RcvrType
         );
         
-        manufacturerMedicines[_manufacturerAddr].push(address(_medicine));
+        manufacturercrops[_manufacturerAddr].push(address(_crop));
         
     }
     

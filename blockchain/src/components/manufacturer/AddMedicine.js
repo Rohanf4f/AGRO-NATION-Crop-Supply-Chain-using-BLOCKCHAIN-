@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function AddMedicine() {
+function Addcrop() {
   const classes = useStyles();
 
   return (
@@ -45,7 +45,7 @@ function AddMedicine() {
             <Grid container spacing={2}>
 
                 <Grid item xs={12}>
-                    <TextField variant="outlined" required fullWidth  id="medicine-description" label="Medicine Desription" name="medicine-description"/>
+                    <TextField variant="outlined" required fullWidth  id="crop-description" label="crop Desription" name="crop-description"/>
                 </Grid>
                 
                 <Grid item xs={12}>
@@ -77,4 +77,4 @@ function AddMedicine() {
     </Router>
   );
 }
-export default withRouter(AddMedicine);
+export default withRouter(Addcrop);

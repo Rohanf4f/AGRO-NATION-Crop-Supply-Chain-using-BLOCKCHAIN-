@@ -68,7 +68,7 @@ const CustomSkinMap = withScriptjs(
             featureType: "poi.sports_complex",
             stylers: [{ visibility: "on" }]
           },
-          { featureType: "poi.medical", stylers: [{ visibility: "on" }] },
+          { featureType: "poi.crop", stylers: [{ visibility: "on" }] },
           {
             featureType: "poi.business",
             stylers: [{ visibility: "simplified" }]

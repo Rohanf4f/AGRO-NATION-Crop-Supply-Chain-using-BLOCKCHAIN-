@@ -1,17 +1,17 @@
 import db from '../db/init';
 
-class Medicine {
+class crop {
 
-    constructor(medicineAddress, description, quantity, rawMaterialAddress) {
-        this.medicineAddress = medicineAddress;
+    constructor(cropAddress, description, quantity, rawMaterialAddress) {
+        this.cropAddress = cropAddress;
         this.description = description;
         this.quantity = quantity;
         this.rawMaterialAddress = rawMaterialAddress;
     }
 
     async save() {
-        return db.collection('medicines').add({
-            'medicineAddress': this.medicineAddress,
+        return db.collection('crops').add({
+            'cropAddress': this.cropAddress,
             'description': this.description,
             'quantity': this.quantity,
             'rawMaterialAddress': this.rawMaterialAddress
@@ -27,4 +27,4 @@ class Medicine {
     }
 }
 
-export default Medicine;
+export default crop;

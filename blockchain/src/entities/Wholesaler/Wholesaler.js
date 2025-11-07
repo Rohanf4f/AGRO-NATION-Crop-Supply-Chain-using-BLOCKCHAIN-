@@ -28,7 +28,7 @@
 //             <Header/>
 //             <div className="body-container">
 //                 <h3 style={{ textAlign: "center", color: "black" }}>Welcome Wholesaler!</h3>
-//                 <Button variant="contained" color="primary" onClick= {()=> this.handleClick()}>View Received Medicine</Button>
+//                 <Button variant="contained" color="primary" onClick= {()=> this.handleClick()}>View Received crop</Button>
 //                 {/* <Button variant="contained" color="primary" onClick={()=>{this.props.history.push('/transporter/handle-package')}}>Handle Package</Button>   */}
 //             </div>
 //             </div>
@@ -61,12 +61,12 @@ import LocationOn from "@material-ui/icons/LocationOn";
 import ViewItem from "@material-ui/icons/ViewList";
 import ViewTrans from "@material-ui/icons/Visibility";
 
-import ViewReceivedMedicine from './ViewReceivedMedicine';
+import ViewReceivedcrop from './ViewReceivedcrop';
 import WholesalerReceiveProduct from './ReceiveProduct';
 import RequestProductWholesaler from './RequestProduct';
-import TransferMedicine from './TransferMedicine';
+import Transfercrop from './Transfercrop';
 import ViewResponses from '../Events/ViewResponses';
-import WholesalerMedicineInfo from './WholesalerMedicineInfo';
+import WholesalercropInfo from './WholesalercropInfo';
 
 import ViewRequests from '../Events/ViewRequests';
 import ViewTransactions from '../Transactions/ViewTransactions';
@@ -88,10 +88,10 @@ const routes = [
     layout: "/wholesaler"
   },*/
   {
-    path: "/view-medicines",
+    path: "/view-crops",
     name: "View Received Crop",
     icon: ViewItem,
-    component: ViewReceivedMedicine,
+    component: ViewReceivedcrop,
     layout: "/wholesaler"
   },
   {
@@ -110,14 +110,14 @@ const routes = [
   },
   
   {
-    path: "/transfer-medicine",
+    path: "/transfer-crop",
     name: "Transfer Crop",
     icon: ViewTrans,
-    component: TransferMedicine,
+    component: Transfercrop,
     layout: "/wholesaler"
   },
   {
-    path: "/receive-medicine",
+    path: "/receive-crop",
     name: "Receive Crop",
     icon: ViewTrans,
     component: WholesalerReceiveProduct,
@@ -159,7 +159,7 @@ export default function Wholesaler({ ...rest }) {
         }
         return null;
       })}
-      <Route exact path="/wholesaler/view-medicine/:id" component={WholesalerMedicineInfo} />
+      <Route exact path="/wholesaler/view-crop/:id" component={WholesalercropInfo} />
       <Route exact path="/wholesaler/view-request/:id" component={ViewRequests} />
       <Route exact path="/wholesaler/view-transaction/:id" component={ViewTransactions} /> 
       <Redirect from="/wholesaler" to="/wholesaler/dashboard" />

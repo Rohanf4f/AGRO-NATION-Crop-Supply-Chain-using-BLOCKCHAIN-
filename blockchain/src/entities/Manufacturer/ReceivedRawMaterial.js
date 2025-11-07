@@ -100,7 +100,7 @@ export default function ReceivedRawMaterial(props) {
     }).then((response) => {
       console.log(response.data);
       axios.post('http://localhost:8000/api/transaction/save-details', {
-        'medicineAddress': rawMaterialAddress,
+        'cropAddress': rawMaterialAddress,
         'fromAddresses': fromAddresses,
         'toAddresses': toAddresses,
         'hash': hash,

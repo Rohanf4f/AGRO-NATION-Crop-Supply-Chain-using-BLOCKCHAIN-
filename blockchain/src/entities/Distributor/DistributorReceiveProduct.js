@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Loader from '../../components/Loader';
-import Medicine from '../../build/Medicine.json';
+import crop from '../../build/crop.json';
 import Transactions from '../../build/Transactions.json';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,8 +38,8 @@ export default function DistributorReceiveProduct(props) {
   }
 
   async function handleSubmit() {
-    let medicine = new web3.eth.Contract(Medicine.abi, address);
-    let data = await medicine.methods.getMedicineInfo().call({from: account});
+    let crop = new web3.eth.Contract(crop.abi, address);
+    let data = await crop.methods.getcropInfo().call({from: account});
     let events = await supplyChain.getPastEvents('sendEvent', {filter: {packageAddr: address}, fromBlock: 0, toBlock: 'latest'});
     events = events.filter((event) => {
       return event.returnValues.packageAddr == address;
@@ -52,7 +52,7 @@ export default function DistributorReceiveProduct(props) {
     if(verificationOutput) {
       alert('Signature verified');
       let subcontractAddress = await supplyChain.methods.getSubContractWD(address).call({ from: account });
-      supplyChain.methods.distributorReceivedMedicine(address, subcontractAddress, wholesaler, signature).send({from: account})
+      supplyChain.methods.distributorReceivedcrop(address, subcontractAddress, wholesaler, signature).send({from: account})
         .once('receipt', async (receipt) => {
           let txnContractAddress = data[7];
           let transporterAddress = data[4][data[4].length - 1];

@@ -45,7 +45,7 @@ function PackageDetails() {
             <Grid container spacing={2}>
 
                 <Grid item xs={12}>
-                    <TextField variant="outlined" required fullWidth  id="input-raw-material" label="Raw Material/ Medicine" name="input-raw-material"/>
+                    <TextField variant="outlined" required fullWidth  id="input-raw-material" label="Raw Material/ crop" name="input-raw-material"/>
                 </Grid>
                 
                 <Grid item xs={12}>

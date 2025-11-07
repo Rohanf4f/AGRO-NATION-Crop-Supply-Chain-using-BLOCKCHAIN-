@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Transactions from '../../build/Transactions.json';
-import Medicine from '../../build/Medicine.json';
+import crop from '../../build/crop.json';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function CreateMedicine(props) {
+export default function Createcrop(props) {
   console.log(props);
   const [account] = useState(props.account);
   const [web3, setWeb3] = useState(props.web3);
@@ -64,17 +64,17 @@ export default function CreateMedicine(props) {
     e.preventDefault();
     isLoading(true);
     var d = web3.utils.padRight(web3.utils.fromAscii(description), 64);
-    supplyChain.methods.manufacturerCreatesMedicine(manufacturerAddress, d, [rawMatAddress], quantity, [transporterAddress]).send({ from: account })
+    supplyChain.methods.manufacturerCreatescrop(manufacturerAddress, d, [rawMatAddress], quantity, [transporterAddress]).send({ from: account })
     .once('receipt', async (receipt) => {
       console.log(receipt);
-      var medicineAddresses = await supplyChain.methods.getAllCreatedMedicines().call({ from: account });
-      let medicineAddress = medicineAddresses[medicineAddresses.length - 1];
-      const medicine = new web3.eth.Contract(Medicine.abi, medicineAddress);
-      let data = await medicine.methods.getMedicineInfo().call({ from: account });
+      var cropAddresses = await supplyChain.methods.getAllCreatedcrops().call({ from: account });
+      let cropAddress = cropAddresses[cropAddresses.length - 1];
+      const crop = new web3.eth.Contract(crop.abi, cropAddress);
+      let data = await crop.methods.getcropInfo().call({ from: account });
       let txnContractAddress = data[7];
       let txnHash = receipt.transactionHash;
       const transactions = new web3.eth.Contract(Transactions.abi, txnContractAddress);
-      transactions.methods.createTxnEntry(txnHash, account, medicineAddress, txnHash, '10', '10').send({ from: account }); //TODO: get user location -> (latitude, longitude)
+      transactions.methods.createTxnEntry(txnHash, account, cropAddress, txnHash, '10', '10').send({ from: account }); //TODO: get user location -> (latitude, longitude)
       isLoading(false);
     })
   }

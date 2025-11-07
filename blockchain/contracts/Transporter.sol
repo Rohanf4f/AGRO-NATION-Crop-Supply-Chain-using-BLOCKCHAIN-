@@ -1,9 +1,9 @@
 pragma solidity ^0.8.17;
 
 import './RawMaterial.sol';
-import './Medicine.sol';
-import './MedicineW_D.sol';
-import './MedicineD_C.sol';
+import './crop.sol';
+import './cropW_D.sol';
+import './cropD_C.sol';
 
 contract Transporter {
     
@@ -18,13 +18,13 @@ contract Transporter {
             RawMaterial(_addr).pickPackage(msg.sender);
         } else if(transportertype == 2) { 
             /// Manufacturer -> Wholesaler
-            Medicine(_addr).pickMedicine(msg.sender);
+            crop(_addr).pickcrop(msg.sender);
         } else if(transportertype == 3) {   
             // Wholesaler to Distributer
-            MedicineW_D(cid).pickWD(_addr, msg.sender);
+            cropW_D(cid).pickWD(_addr, msg.sender);
         } else if(transportertype == 4) {   
             // Distrubuter to Customer
-            MedicineD_C(cid).pickDC(_addr, msg.sender);
+            cropD_C(cid).pickDC(_addr, msg.sender);
         }
     }
     

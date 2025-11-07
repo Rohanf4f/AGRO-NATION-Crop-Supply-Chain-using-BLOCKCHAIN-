@@ -27,20 +27,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));    
 
-export default function TransferMedicine(props) {
+export default function Transfercrop(props) {
     const [account] = useState(props.account);
     const [web3, setWeb3] = useState(props.web3);
     const [supplyChain] = useState(props.supplyChain);
     const [loading, isLoading] = useState(false);
-    const [medicineAddress, setMedicineAddress] = useState("");
+    const [cropAddress, setcropAddress] = useState("");
     const [transporterAddress, setTransporterAddress] = useState("");
     const [distributorAddress, setDistributorAddress] = useState("");
 
     const classes = useStyles();
 
     const handleInputChange = (e) => {
-        if (e.target.id === 'medicineAddress') {
-            setMedicineAddress(e.target.value);
+        if (e.target.id === 'cropAddress') {
+            setcropAddress(e.target.value);
         } else if (e.target.id === 'transporterAddress') {
             setTransporterAddress(e.target.value);
         } else if (e.target.id === 'distributorAddress') {
@@ -51,7 +51,7 @@ export default function TransferMedicine(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         isLoading(true);
-        supplyChain.methods.transferMedicineWtoD(medicineAddress, transporterAddress, distributorAddress).send({ from: account })
+        supplyChain.methods.transfercropWtoD(cropAddress, transporterAddress, distributorAddress).send({ from: account })
             .once('receipt', async (receipt) => {
                 console.log(receipt);
                 isLoading(false);
@@ -69,7 +69,7 @@ export default function TransferMedicine(props) {
                         <Grid container spacing={2}>
 
                             <Grid item xs={12}>
-                                <TextField variant="outlined" onChange={handleInputChange} required fullWidth id="medicineAddress" label="Crop Package Address" name="medicineAddress" />
+                                <TextField variant="outlined" onChange={handleInputChange} required fullWidth id="cropAddress" label="Crop Package Address" name="cropAddress" />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField variant="outlined" onChange={handleInputChange} required fullWidth id="transporterAddress" label="Crop Transporter Address" name="transporterAddress" />

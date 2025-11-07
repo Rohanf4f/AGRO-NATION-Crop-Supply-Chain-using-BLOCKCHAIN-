@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Loader from '../../components/Loader';
 import RawMaterial from '../../build/RawMaterial.json';
-import Medicine from '../../build/Medicine.json';
+import crop from '../../build/crop.json';
 import Transactions from '../../build/Transactions.json';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import CustomStepper from '../../main_dashboard/components/Stepper/Stepper';
@@ -19,21 +19,21 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function DistributorMedicineInfo(props) {
+export default function DistributorcropInfo(props) {
     const classes = useStyles();
     const [account] = useState(props.location.query.account);
-    const [medicineAddress] = useState(props.location.query.address);
+    const [cropAddress] = useState(props.location.query.address);
     const [web3] = useState(props.location.query.web3);
     const [supplyChain] = useState(props.location.query.supplyChain);
     const [distributor, setDistributor] = useState("");
     const [details, setDetails] = useState({});
     const [loading, isLoading] = useState(true);
 
-    async function getMedicineData() {
-        let medicine = new web3.eth.Contract(Medicine.abi, medicineAddress);
-        let data = await medicine.methods.getMedicineInfo().call({ from: account });
-        let subcontractAddressWD = await supplyChain.methods.getSubContractWD(medicineAddress).call({ from: account });
-        let subcontractAddressDC = await supplyChain.methods.getSubContractDC(medicineAddress).call({ from: account });
+    async function getcropData() {
+        let crop = new web3.eth.Contract(crop.abi, cropAddress);
+        let data = await crop.methods.getcropInfo().call({ from: account });
+        let subcontractAddressWD = await supplyChain.methods.getSubContractWD(cropAddress).call({ from: account });
+        let subcontractAddressDC = await supplyChain.methods.getSubContractDC(cropAddress).call({ from: account });
         let status = data[6];
         console.log(status);
         let txt = "NA";
@@ -50,7 +50,7 @@ export default function DistributorMedicineInfo(props) {
         setDistributor(data[5]);
 
         let display = <div>
-            <p>Crop Address: {medicineAddress}</p>
+            <p>Crop Address: {cropAddress}</p>
             <p>Crop Manufacturer: {data[0]}</p>
             <p>Crop Description: {data[1]}</p>
             <p>Crop Raw Materials: {data[2]}</p>
@@ -98,11 +98,11 @@ export default function DistributorMedicineInfo(props) {
     }
 
     function sendPackage() {
-        let medicine = new web3.eth.Contract(Medicine.abi, medicineAddress);
+        let crop = new web3.eth.Contract(crop.abi, cropAddress);
         let signature = prompt('Enter signature');
-        supplyChain.methods.sendPackageToEntity(distributor, account, medicineAddress, signature).send({ from: account })
+        supplyChain.methods.sendPackageToEntity(distributor, account, cropAddress, signature).send({ from: account })
             .once('receipt', async (receipt) => {
-                let data = await medicine.methods.getMedicineInfo().call({ from: account });
+                let data = await crop.methods.getcropInfo().call({ from: account });
                 let txnContractAddress = data[7];
                 let transporterAddress = data[4][data[4].length - 1];
                 let txnHash = receipt.transactionHash;
@@ -113,10 +113,10 @@ export default function DistributorMedicineInfo(props) {
             });
     }
 
-    async function saveMedicineDetails() {
+    async function savecropDetails() {
         isLoading(true);
-        let medicine = new web3.eth.Contract(Medicine.abi, medicineAddress);
-        let data = await medicine.methods.getMedicineInfo().call({ from: account });
+        let crop = new web3.eth.Contract(crop.abi, cropAddress);
+        let data = await crop.methods.getcropInfo().call({ from: account });
 
         let transaction = new web3.eth.Contract(Transactions.abi, data[7]);
         let txns = await transaction.methods.getAllTransactions().call({ from: account });
@@ -137,15 +137,15 @@ export default function DistributorMedicineInfo(props) {
             timestamps.push(Number(txn[6]));
         }
 
-        axios.post('http://localhost:8000/api/medicine/save-details', {
-            'medicineAddress': medicineAddress,
+        axios.post('http://localhost:8000/api/crop/save-details', {
+            'cropAddress': cropAddress,
             'description': web3.utils.hexToUtf8(data[1]),
             'quantity': Number(data[3]),
             'rawMaterialAddress': data[2][0]
         }).then((response) => {
             console.log(response.data);
             axios.post('http://localhost:8000/api/transaction/save-details', {
-                'medicineAddress': medicineAddress,
+                'cropAddress': cropAddress,
                 'fromAddresses': fromAddresses,
                 'toAddresses': toAddresses,
                 'hash': hash,
@@ -168,7 +168,7 @@ export default function DistributorMedicineInfo(props) {
 
 
     useEffect(() => {
-        getMedicineData();
+        getcropData();
     }, []);
 
 
@@ -181,9 +181,9 @@ export default function DistributorMedicineInfo(props) {
             <div>
                 <h1>Product Details</h1>
                 <p>{details}</p>
-                <Button variant="contained" color="primary" ><Link to={{ pathname: `/distributor/view-requests/${medicineAddress}`, query: { address: medicineAddress, account: account, web3: web3, supplyChain: supplyChain } }}>View Requests</Link></Button>&nbsp;&nbsp;&nbsp;
+                <Button variant="contained" color="primary" ><Link to={{ pathname: `/distributor/view-requests/${cropAddress}`, query: { address: cropAddress, account: account, web3: web3, supplyChain: supplyChain } }}>View Requests</Link></Button>&nbsp;&nbsp;&nbsp;
                 <Button variant="contained" color="primary" onClick={sendPackage}>Send Package</Button>&nbsp;&nbsp;&nbsp;
-                <Button variant="contained" color="primary" onClick={saveMedicineDetails}>Save Crop Info to Database</Button>
+                <Button variant="contained" color="primary" onClick={savecropDetails}>Save Crop Info to Database</Button>
             </div>
         );
     }
